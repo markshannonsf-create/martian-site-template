@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // `newsite` replaces this with the site's slug, here and in package.json.
+  // Doing it by hand? Change it in both and nowhere else.
+  //
+  // It is a real name rather than a placeholder like __SLUG__ because a Worker
+  // name must be lowercase alphanumeric with dashes — anything else and
+  // `npm run dev` refuses to start on a freshly cloned template, which is a
+  // rotten first five minutes.
+  "name": "client-site",
+
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": "./dist",
+    // The site is static, so a request that matches a file is served as one and
+    // never reaches a Worker. `404-page` serves the built 404 rather than a
+    // Cloudflare error page.
+    "not_found_handling": "404-page"
+  },
+
+  "observability": { "enabled": true }
+
+  // Routes are added when the domain is on Cloudflare and pointed here:
+  // "routes": [
+  //   { "pattern": "example.com/*", "zone_name": "example.com" },
+  //   { "pattern": "www.example.com/*", "zone_name": "example.com" }
+  // ]
+}

@@ -1,0 +1,94 @@
+---
+import { site, telHref } from '../lib/site';
+
+const year = new Date().getFullYear();
+const c = site.contact;
+const hasContact = Boolean(c.phone || c.email || c.address || c.hours);
+---
+
+<footer>
+  <div class="wrap">
+    {
+      hasContact && (
+        <div class="details">
+          {c.phone && (
+            <p>
+              <span class="label">Phone</span>
+              <a href={telHref(c.phone)}>{c.phone}</a>
+            </p>
+          )}
+          {c.email && (
+            <p>
+              <span class="label">Email</span>
+              <a href={`mailto:${c.email}`}>{c.email}</a>
+            </p>
+          )}
+          {c.address && (
+            <p>
+              <span class="label">Address</span>
+              <span>{c.address}</span>
+            </p>
+          )}
+          {c.hours && (
+            <p>
+              <span class="label">Hours</span>
+              <span>{c.hours}</span>
+            </p>
+          )}
+        </div>
+      )
+    }
+
+    <div class="fine">
+      <span>© {year} {site.name}</span>
+      {site.legal.privacy && <a href="/privacy">Privacy</a>}
+      {site.legal.terms && <a href="/terms">Terms</a>}
+      {/*
+        A quiet credit, and a real link. It is how a local business finds us
+        after seeing a site they liked, which is the cheapest lead there is.
+      */}
+      <a class="by" href="https://martiancreative.com" rel="noopener">
+        Site by Martian Creative
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--line);
+    background: var(--bg-2);
+    padding-block: 2rem;
+    font-size: 0.92rem;
+  }
+
+  .details {
+    display: grid;
+    gap: 0.25rem 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    margin-bottom: 1.5rem;
+  }
+  .details p { margin: 0 0 0.35rem; max-width: none; }
+
+  .label {
+    display: block;
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+  }
+
+  .fine {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    align-items: center;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+  }
+  .fine a { color: var(--ink-dim); text-decoration: none; }
+  .fine a:hover { color: var(--ink); }
+  .by { margin-left: auto; }
+</style>

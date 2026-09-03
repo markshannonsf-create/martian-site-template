@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Sections from '../components/Sections.astro';
+import { site, telHref } from '../lib/site';
+
+const c = site.contact;
+const hasContact = Boolean(c.phone || c.email || c.address || c.hours || c.blurb);
+---
+
+<Base path="/">
+  <Sections sections={site.sections} />
+
+  {
+    hasContact && (
+      <section id="contact">
+        <div class="wrap">
+          <h2>Contact</h2>
+          {c.blurb && <p class="lede">{c.blurb}</p>}
+
+          <div class="ways">
+            {/* A phone number on a phone should dial. */}
+            {c.phone && (
+              <p><a class="button" href={telHref(c.phone)}>{c.phone}</a></p>
+            )}
+            {c.email && (
+              <p><a class="button quiet" href={`mailto:${c.email}`}>{c.email}</a></p>
+            )}
+          </div>
+
+          {c.address && <p>{c.address}</p>}
+          {c.hours && <p><strong>Hours:</strong> {c.hours}</p>}
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .ways { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+  .ways p { margin: 0; }
+</style>

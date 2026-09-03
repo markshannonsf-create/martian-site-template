@@ -1,0 +1,75 @@
+---
+/**
+ * Every page's shell: head, header, footer, and the one place the brand color
+ * reaches the CSS.
+ */
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, url, localBusinessJsonLd } from '../lib/site';
+
+type Props = {
+  title?: string;
+  description?: string | null;
+  path?: string;
+  /** Keep a page out of search results — used by 404 and anything private. */
+  noindex?: boolean;
+};
+
+const { title, description, path = '/', noindex = false } = Astro.props;
+
+// The business name goes last, the way people read tabs.
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name}${site.tagline ? ` — ${site.tagline}` : ''}`;
+const desc = description ?? site.description ?? null;
+const canonical = url(path);
+
+const googleFont =
+  site.brand.font && site.brand.font !== 'system'
+    ? `https://fonts.googleapis.com/css2?family=${encodeURIComponent(site.brand.font)}:wght@400;700&display=swap`
+    : null;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    {desc && <meta name="description" content={desc} />}
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    {desc && <meta property="og:description" content={desc} />}
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {
+      googleFont && (
+        <>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link rel="stylesheet" href={googleFont} />
+        </>
+      )
+    }
+
+    {/* The single brand color, and the font when one was chosen. Everything
+        else in global.css derives from these. */}
+    <style set:html={`:root{--accent:${site.brand.accent};${
+      googleFont ? `--font:"${site.brand.font}",ui-sans-serif,system-ui,sans-serif;` : ''
+    }}`}></style>
+
+    <script type="application/ld+json" set:html={localBusinessJsonLd()} />
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

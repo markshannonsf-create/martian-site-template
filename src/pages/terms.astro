@@ -1,0 +1,68 @@
+---
+/**
+ * Terms for a brochure site.
+ *
+ * Deliberately short. These govern using the WEBSITE — they are not the
+ * agreement between the business and its customers, and they are certainly not
+ * the agreement between the business and Martian Creative, which lives in the
+ * panel and was signed. A page pretending to do all three does none of them.
+ */
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/site';
+
+const updated = new Date().toISOString().slice(0, 10);
+---
+
+<Base title="Terms" path="/terms" description={`Terms for using the ${site.name} website.`}>
+  <section>
+    <div class="wrap prose">
+      <h1>Terms</h1>
+      <p class="lede">Last updated {updated}.</p>
+
+      <p>
+        These terms cover the use of this website. They are not the terms of any
+        work, sale or service {site.name} provides — those are agreed directly,
+        in writing, and nothing on this page changes them.
+      </p>
+
+      <h2>What is on the site</h2>
+      <p>
+        We keep this site accurate and current, but prices, availability and
+        details change. Nothing here is a binding offer, and if something on the
+        site conflicts with what you were told directly, ask us which is right
+        rather than assuming.
+      </p>
+
+      <h2>The content is ours</h2>
+      <p>
+        The text, photographs, logos and design on this site belong to
+        {' '}{site.name} unless stated otherwise. You are welcome to link to it, and
+        to quote a reasonable amount with credit. Reproducing it wholesale is not
+        permitted.
+      </p>
+
+      <h2>Links elsewhere</h2>
+      <p>
+        Where we link to another website we are not responsible for what is on it.
+      </p>
+
+      <h2>Availability</h2>
+      <p>
+        We aim to keep the site up and correct, but it is provided as it is. We do
+        not accept liability for a loss arising from the site being unavailable or
+        from an error in it, to the extent the law allows.
+      </p>
+
+      <h2>Getting in touch</h2>
+      <p>
+        Questions about these terms can go to any of the contact details on this
+        site.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose { max-width: var(--measure); }
+  .prose h2 { font-size: 1.2rem; margin-top: 2rem; }
+</style>
